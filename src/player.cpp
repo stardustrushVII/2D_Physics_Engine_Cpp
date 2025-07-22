@@ -10,13 +10,17 @@ Player::Player(float startX, float startY) {
 }
 
 Player::~Player() {
-    // Nothing yet — but in future: free textures, sounds, etc.
+    // TODO: textures, sound, etc
 }
 
-void Player::update(TileMap* tilemap, int windowWidth) {
+void Player::update(TileMap* tilemap, int windowWidth) { // clearly important ALWAYS LOOK HERE FIRST
     vy += 0.5f;  // fake gravity
+    if (!isJumping && vy < 0){
+        vy *= 0.4f;
+    }
     y += vy; // vertical position update
     x += vx;
+    if (vy > 10.0f) vy = 10.0f; // fall speed max
 
     //---collisionDetection <bottom_center of player>
     float probeX = x + 16;
@@ -26,6 +30,9 @@ void Player::update(TileMap* tilemap, int windowWidth) {
         // snapping to nearestTile edge(ware)
         y = static_cast<int>(probeY / 32) * 32 - 32;
         vy = 0;
+        isGrounded = true; // rules allow jump
+    } else {
+        isGrounded = false; // in air
     }
 
     x += vx; // horizonatl movement
@@ -34,9 +41,9 @@ void Player::update(TileMap* tilemap, int windowWidth) {
     if (x + 32 > windowWidth) x = windowWidth - 32;
 }
 
-void Player::render(SDL_Renderer* renderer) {
+void Player::render(SDL_Renderer* renderer, int cameraX) {
     SDL_Rect rect;  
-    rect.x = static_cast<int>(x); 
+    rect.x = static_cast<int>(x) - cameraX; 
     rect.y = static_cast<int>(y);
     rect.w = 32;
     rect.h = 32;

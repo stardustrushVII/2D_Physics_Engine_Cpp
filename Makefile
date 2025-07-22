@@ -1,18 +1,38 @@
-CXX = clang++
-CXXFLAGS = -std=c++20 -Wall -Iinclude -I/opt/homebrew/opt/sdl2/include
-LDFLAGS = -L/opt/homebrew/opt/sdl2/lib -lSDL2
+# ---- CONFIG ----
+CXX      = clang++
+CXXFLAGS = -std=c++20 -Wall -Wextra -g \
+           -Iinclude \
+           -I/opt/homebrew/include \
+           -I/opt/homebrew/opt/sdl2/include \
+           -I/opt/homebrew/opt/sdl2_ttf/include
 
-SRC = $(wildcard src/*.cpp)
-OUT = build/sonic
+LDFLAGS  = -L/opt/homebrew/lib \
+           -L/opt/homebrew/opt/sdl2/lib \
+           -L/opt/homebrew/opt/sdl2_ttf/lib
 
-all: $(OUT)
+LIBS     = -lSDL2 -lSDL2_ttf
 
-$(OUT): $(SRC)
-	$(CXX) $(CXXFLAGS) $(SRC) -o $(OUT) $(LDFLAGS)
+SRC_DIR  = src
+BUILD_DIR = build
+BIN      = $(BUILD_DIR)/sonic
 
-run: $(OUT)
-	./$(OUT)
+# ---- SOURCES ----
+SRCS = $(wildcard $(SRC_DIR)/*.cpp)
+OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
+
+# ---- RULES ----
+all: $(BIN)
+
+$(BIN): $(OBJS)
+	@mkdir -p $(BUILD_DIR)
+	$(CXX) $(OBJS) -o $@ $(LDFLAGS) $(LIBS)
+
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+run: $(BIN)
+	./$(BIN)
 
 clean:
-	rm -f $(OUT)
-
+	rm -rf $(BUILD_DIR)

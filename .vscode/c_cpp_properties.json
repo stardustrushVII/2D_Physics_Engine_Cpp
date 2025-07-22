@@ -1,0 +1,41 @@
+{
+    "configurations": [
+      {
+        "name": "macOS",
+        "includePath": [
+  "${workspaceFolder}/**",
+  "/opt/homebrew/include",
+  "/opt/homebrew/opt/sdl2/include",
+  "/opt/homebrew/opt/sdl2/SDL2",
+  "/opt/homebrew/opt/sdl2_ttf/include",
+  "/opt/homebrew/opt/sdl2_ttf/include/SDL2"
+],
+"forcedInclude": [
+  "/opt/homebrew/opt/sdl2_ttf/include/SDL2/SDL_ttf.h"
+],
+
+        "defines": [
+          "SDL_MAIN_HANDLED"
+        ],
+        "browse": {
+  "path": [
+    "/opt/homebrew/include",
+    "/opt/homebrew/opt/sdl2/include",
+    "/opt/homebrew/opt/sdl2_ttf/include",
+    "/opt/homebrew/opt/sdl2_ttf/include/SDL2"
+  ],
+  "limitSymbolsToIncludedHeaders": true
+},
+        "macFrameworkPath": [
+          "/System/Library/Frameworks",
+          "/Library/Frameworks"
+        ],
+        "compilerPath": "/usr/bin/clang",
+        "cStandard": "c17",
+        "cppStandard": "c++20",
+        "intelliSenseMode": "macos-clang-arm64"
+      }
+    ],
+    "version": 4
+  }
+  

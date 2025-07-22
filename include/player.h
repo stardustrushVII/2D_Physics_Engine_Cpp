@@ -15,9 +15,10 @@ public:
     ~Player();
 
     void update(TileMap* tilemap, int windowWidth); 
-    void render(SDL_Renderer* renderer);
+    void render(SDL_Renderer* renderer, int cameraX);
 
     bool isGrounded = false;
+    bool isJumping = false;
 };
 
 #endif

@@ -12,7 +12,7 @@ TileMap::TileMap(int w, int h) {
 }
 
 TileMap::~TileMap() {
-    delete[] tiles;
+    if (tiles) delete[] tiles;
 }
 
 bool TileMap::isSolidTileAt(float worldX, float worldY) {
@@ -25,12 +25,16 @@ bool TileMap::isSolidTileAt(float worldX, float worldY) {
     return tiles[tileY * width + tileX] == 1;
 }
 
-void TileMap::render(SDL_Renderer* renderer) {
+void TileMap::render(SDL_Renderer* renderer, int cameraX) {
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
             int tile = tiles[y * width + x];
             if (tile == 1) {
-                SDL_Rect rect = { x * 32, y * 32, 32, 32 };
+                SDL_Rect rect;
+                rect.x = x * 32 - cameraX;
+                rect.y = y * 32;
+                rect.w = 32;
+                rect.h = 32;
                 SDL_SetRenderDrawColor(renderer, 80, 80, 80, 255);  // gray block
                 SDL_RenderFillRect(renderer, &rect);
             }

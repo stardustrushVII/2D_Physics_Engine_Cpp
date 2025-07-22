@@ -8,12 +8,13 @@ class TileMap {
 
 public:
     int width, height;
-    int* tiles;
+    int* tiles = nullptr;
+    int getWidth() const { return width; }
 
     TileMap(int w, int h);
     ~TileMap();
 
-    void render(SDL_Renderer* renderer);
+    void render(SDL_Renderer* renderer, int cameraX);
 
     bool isSolidTileAt(float worldX, float worldY);
 };
