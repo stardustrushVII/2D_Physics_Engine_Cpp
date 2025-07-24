@@ -1,3 +1,4 @@
+// (C) 2025 Stardust Softworks
 #ifndef RESOLUTION_SELECTOR_H
 #define RESOLUTION_SELECTOR_H
 

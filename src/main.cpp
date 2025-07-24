@@ -1,9 +1,12 @@
+// (C) 2025 Stardust Softworks
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include "../include/player.h"
 #include "../include/tilemap.h"
 #include "../include/resolution_selector.h"
+#include "../include/physics.h"
+#include "../include/input.h"
 
 int main(int /*argc*/, char* /*argv*/[]) {
     SDL_Init(SDL_INIT_VIDEO);
@@ -29,16 +32,16 @@ int main(int /*argc*/, char* /*argv*/[]) {
     SDL_DestroyWindow(selectorWindow);
 
     // actally game window
-    SDL_Window* window = SDL_CreateWindow("Sonic Engine",
+    SDL_Window* window = SDL_CreateWindow("Stardust Engine",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         selected.width, selected.height, SDL_WINDOW_SHOWN);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     int winW = selected.width;
-    int winH = selected.height;
+    //int winH = selected.height; 
 
     int cameraX = 0;
-    TileMap* map = new TileMap(20, 15);
+    TileMap* map = new TileMap(50, 15);
     Player* sonic = new Player(100, 100);
 
     bool running = true;
@@ -52,21 +55,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
             if (e.type == SDL_QUIT)
                 running = false;
 
-            if (e.type == SDL_KEYDOWN) {
-                if (e.key.keysym.sym == SDLK_LEFT) moveLeft = true;
-                if (e.key.keysym.sym == SDLK_RIGHT) moveRight = true;
-                if (e.key.keysym.sym == SDLK_SPACE && sonic->isGrounded) {
-                    sonic->vy = -10.0f;
-                    sonic->isGrounded = false;
-                    sonic->isJumping = true;
-                }
-            }
-
-            if (e.type == SDL_KEYUP) {
-                if (e.key.keysym.sym == SDLK_LEFT) moveLeft = false;
-                if (e.key.keysym.sym == SDLK_RIGHT) moveRight = false;
-                if (e.key.keysym.sym == SDLK_SPACE) sonic->isJumping = false;
-            }
+            processPlayerInput(sonic, moveLeft, moveRight, e); // controls
         }
 
         // camera logic update
@@ -83,7 +72,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
         else sonic->vx = 0.0f;
 
         // game logic update
-        sonic->update(map, winW);
+        physics::updatePlayer(sonic, map, 0.016f); // frame time budget ~60fps
 
         // start drawing
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -111,4 +100,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
     TTF_Quit();
     SDL_Quit();
     return 0;
+
+    std::cout << "app running, press any key to quit" << std::endl;
+    std::cin.get();
 }

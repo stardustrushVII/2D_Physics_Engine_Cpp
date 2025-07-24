@@ -1,4 +1,4 @@
-// src/player.cpp
+// (C) 2025 Stardust Softworks
 #include "../include/player.h"
 #include "../include/tilemap.h"
 
@@ -15,10 +15,10 @@ Player::~Player() {
 
 void Player::update(TileMap* tilemap, int windowWidth) { // clearly important ALWAYS LOOK HERE FIRST
     vy += 0.5f;  // fake gravity
+    y += vy; // vertical position update
     if (!isJumping && vy < 0){
         vy *= 0.4f;
     }
-    y += vy; // vertical position update
     x += vx;
     if (vy > 10.0f) vy = 10.0f; // fall speed max
 
@@ -49,6 +49,6 @@ void Player::render(SDL_Renderer* renderer, int cameraX) {
     rect.h = 32;
 
 
-    SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);  // red player
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 1);  // red player
     SDL_RenderFillRect(renderer, &rect);
 }

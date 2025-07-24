@@ -1,3 +1,4 @@
+// (C) 2025 Stardust Softworks
 #include "../include/resolution_selector.h"
 #include <vector>
 #include <iostream>
@@ -52,7 +53,7 @@ Resolution selectResolution(SDL_Renderer* renderer, TTF_Font* font, SDL_Window* 
         SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 
         // rewnder logic 2: electric boogaloo
-        SDL_Surface* helpSurface = TTF_RenderText_Solid(font, "Use ← → then press Enter", white);
+        SDL_Surface* helpSurface = TTF_RenderText_Solid(font, "Use left/right arrow keys then press Enter", white);
         SDL_Texture* helpTexture = SDL_CreateTextureFromSurface(renderer, helpSurface);
         int helpW, helpH;
         SDL_QueryTexture(helpTexture, nullptr, nullptr, &helpW, &helpH);

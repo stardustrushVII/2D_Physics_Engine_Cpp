@@ -1,38 +1,24 @@
-# ---- CONFIG ----
-CXX      = clang++
-CXXFLAGS = -std=c++20 -Wall -Wextra -g \
-           -Iinclude \
-           -I/opt/homebrew/include \
-           -I/opt/homebrew/opt/sdl2/include \
-           -I/opt/homebrew/opt/sdl2_ttf/include
-
-LDFLAGS  = -L/opt/homebrew/lib \
-           -L/opt/homebrew/opt/sdl2/lib \
-           -L/opt/homebrew/opt/sdl2_ttf/lib
-
-LIBS     = -lSDL2 -lSDL2_ttf
-
-SRC_DIR  = src
+CXX = clang++
+CXXFLAGS = -std=c++20 -Wall -Wextra -I/opt/homebrew/include -Iinclude
+LDFLAGS = -L/opt/homebrew/lib `sdl2-config --libs` -lSDL2_ttf
 BUILD_DIR = build
-BIN      = $(BUILD_DIR)/sonic
 
-# ---- SOURCES ----
-SRCS = $(wildcard $(SRC_DIR)/*.cpp)
-OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
+SRC_DIR = src
 
-# ---- RULES ----
-all: $(BIN)
+all: build/sonic build/leveltest
 
-$(BIN): $(OBJS)
-	@mkdir -p $(BUILD_DIR)
-	$(CXX) $(OBJS) -o $@ $(LDFLAGS) $(LIBS)
+build/sonic: \
+    $(SRC_DIR)/main.cpp \
+	$(SRC_DIR)/resolution_selector.cpp \
+	$(SRC_DIR)/input.cpp \
+    $(SRC_DIR)/player.cpp \
+    $(SRC_DIR)/tilemap.cpp \
+    $(SRC_DIR)/physics.cpp
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(BUILD_DIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-run: $(BIN)
-	./$(BIN)
+build/leveltest: src/leveltest.cpp src/player.cpp src/tilemap.cpp src/physics.cpp src/input.cpp	src/resolution_selector.cpp
+	$(CXX) $(CXXFLAGS) -I/opt/homebrew/include -Iinclude \
+	$^ -o $@ -L/opt/homebrew/lib `sdl2-config --libs` -lSDL2_ttf
 
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf build/*.o build/sonic build/leveltest

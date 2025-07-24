@@ -1,4 +1,4 @@
-// include/player.h
+// (C) 2025 Stardust Softworks
 #ifndef PLAYER_H
 #define PLAYER_H
 
@@ -10,6 +10,8 @@ class Player {
 public:
     float x, y;
     float vx, vy;
+    float width = 32.0f;
+    float height = 32.0f;
 
     Player(float startX, float startY);
     ~Player();
@@ -19,6 +21,7 @@ public:
 
     bool isGrounded = false;
     bool isJumping = false;
+    bool jumpHeld = false;
 };
 
 #endif
