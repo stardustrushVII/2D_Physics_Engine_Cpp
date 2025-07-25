@@ -30,7 +30,8 @@ int main(int /*argc*/, char* /*argv*/[]) {
     Resolution selected = selectResolution(selectorRenderer, font, selectorWindow);
     SDL_DestroyRenderer(selectorRenderer);
     SDL_DestroyWindow(selectorWindow);
-
+    TTF_CloseFont;
+    
     // actally game window
     SDL_Window* window = SDL_CreateWindow("Stardust Engine",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
