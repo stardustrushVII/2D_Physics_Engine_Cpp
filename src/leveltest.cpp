@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
     Resolution selected = selectResolution(selectorRenderer, font, selectorWindow);
     SDL_DestroyRenderer(selectorRenderer);
     SDL_DestroyWindow(selectorWindow);
-    TTF_CloseFont;
+    TTF_CloseFont(font);
 
     // create SDL window (for game)
     SDL_Window* window = SDL_CreateWindow("Stardust_Engine_Level_Test",
@@ -92,6 +92,7 @@ for (int x = 5; x <= 12; ++x) {
     bool moveLeft = false;
     bool moveRight = false;
     bool isGrounded = false;
+    bool pause = false;
 
 
     while (running) {
@@ -101,7 +102,7 @@ for (int x = 5; x <= 12; ++x) {
                 running = false;
 
             }
-            processPlayerInput(&sonic, moveLeft, moveRight, e);
+            processPlayerInput(&sonic, moveLeft, moveRight, pause, e);
         }
         if (moveLeft && !moveRight) sonic.vx = -3.0f;
         else if (moveRight && !moveLeft) sonic.vx = 3.0f;

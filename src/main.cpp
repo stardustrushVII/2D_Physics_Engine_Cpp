@@ -7,6 +7,7 @@
 #include "../include/resolution_selector.h"
 #include "../include/physics.h"
 #include "../include/input.h"
+#include "../include/pause.h"
 
 int main(int /*argc*/, char* /*argv*/[]) {
     SDL_Init(SDL_INIT_VIDEO);
@@ -30,8 +31,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
     Resolution selected = selectResolution(selectorRenderer, font, selectorWindow);
     SDL_DestroyRenderer(selectorRenderer);
     SDL_DestroyWindow(selectorWindow);
-    TTF_CloseFont;
-    
+
     // actally game window
     SDL_Window* window = SDL_CreateWindow("Stardust Engine",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
@@ -48,15 +48,22 @@ int main(int /*argc*/, char* /*argv*/[]) {
     bool running = true;
     bool moveLeft = false;
     bool moveRight = false;
+    bool pause = false;
 
     SDL_Event e;
 
-    while (running) {
+     while (running) {
         while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_QUIT)
-                running = false;
+            if (e.type == SDL_QUIT) running = false;
+            pause = pauseState(pause, e);
+            if (!pause)
+                processPlayerInput(sonic, moveLeft, moveRight, pause, e);
+        }
 
-            processPlayerInput(sonic, moveLeft, moveRight, e); // controls
+        if (pause) {
+            renderPause(renderer, font);
+            SDL_RenderPresent(renderer);
+            continue;
         }
 
         // camera logic update

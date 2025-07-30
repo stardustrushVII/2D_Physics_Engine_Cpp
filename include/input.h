@@ -4,6 +4,6 @@
 #include <SDL2/SDL.h>
 #include "player.h"
 
-void processPlayerInput(Player* player, bool& moveLeft, bool &moveRight, SDL_Event& e);
+void processPlayerInput(Player* player, bool& moveLeft, bool &moveRight, bool& pause, SDL_Event& e);
 
 #endif

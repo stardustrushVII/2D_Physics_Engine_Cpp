@@ -13,10 +13,11 @@ build/sonic: \
 	$(SRC_DIR)/input.cpp \
     $(SRC_DIR)/player.cpp \
     $(SRC_DIR)/tilemap.cpp \
-    $(SRC_DIR)/physics.cpp
+    $(SRC_DIR)/physics.cpp	\
+	$(SRC_DIR)/pause.cpp
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 
-build/leveltest: src/leveltest.cpp src/player.cpp src/tilemap.cpp src/physics.cpp src/input.cpp	src/resolution_selector.cpp
+build/leveltest: src/leveltest.cpp src/player.cpp src/tilemap.cpp src/physics.cpp src/input.cpp	src/resolution_selector.cpp	src/pause.cpp
 	$(CXX) $(CXXFLAGS) -I/opt/homebrew/include -Iinclude \
 	$^ -o $@ -L/opt/homebrew/lib `sdl2-config --libs` -lSDL2_ttf
 
