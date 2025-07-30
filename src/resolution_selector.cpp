@@ -40,7 +40,7 @@ Resolution selectResolution(SDL_Renderer* renderer, TTF_Font* font, SDL_Window* 
 
         SDL_Color white = {255, 255, 255, 255};
 
-        // render logic 1: Big the cat: Select a stage..
+        // render logic 1: Big the Cat: Select a stage..
         SDL_Surface* msgSurface = TTF_RenderText_Solid(font, "Please select a resolution.", white);
         SDL_Texture* msgTexture = SDL_CreateTextureFromSurface(renderer, msgSurface);
         int msgW, msgH;
@@ -52,7 +52,7 @@ Resolution selectResolution(SDL_Renderer* renderer, TTF_Font* font, SDL_Window* 
         SDL_Surface* surface = TTF_RenderText_Solid(font, resolutions[selectedIndex].label, white);
         SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-        // rewnder logic 2: electric boogaloo
+        // render logic 2: electric boogaloo
         SDL_Surface* helpSurface = TTF_RenderText_Solid(font, "Use left/right arrow keys then press Enter", white);
         SDL_Texture* helpTexture = SDL_CreateTextureFromSurface(renderer, helpSurface);
         int helpW, helpH;

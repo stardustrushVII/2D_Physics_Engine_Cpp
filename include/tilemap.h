@@ -29,7 +29,6 @@ enum TileType {
     void render(SDL_Renderer* renderer, int cameraX);
 
     bool isSolidTileAt(float worldX, float worldY);
-    // tilemap.h
 
 
 

@@ -20,7 +20,7 @@ bool TileMap::isSolidTileAt(float worldX, float worldY) {
     int tileY = static_cast<int>(worldY) / 32;
 
     if (tileX < 0 || tileX >= width || tileY < 0 || tileY >= height)
-    return false; // enemy out of bounds
+    return false; // out of bounds
 
     return tiles[tileY * width + tileX] == 1;
 }

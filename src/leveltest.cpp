@@ -6,6 +6,7 @@
 #include "../include/physics.h"
 #include "../include/input.h"
 #include "../include/resolution_selector.h"
+#include "../include/pause.h"
 
 int main(int argc, char* argv[]) {
     // Init SDL
@@ -36,7 +37,7 @@ int main(int argc, char* argv[]) {
     Resolution selected = selectResolution(selectorRenderer, font, selectorWindow);
     SDL_DestroyRenderer(selectorRenderer);
     SDL_DestroyWindow(selectorWindow);
-    TTF_CloseFont(font);
+    
 
     // create SDL window (for game)
     SDL_Window* window = SDL_CreateWindow("Stardust_Engine_Level_Test",
@@ -82,7 +83,7 @@ for (int x = 5; x <= 12; ++x) {
 }
 
 
-    // Creation player and place near the top
+    // creation player and place near the top
     Player sonic(160, 200); // position player above the slope area
 
     Uint32 lastTicks = SDL_GetTicks();
@@ -96,16 +97,25 @@ for (int x = 5; x <= 12; ++x) {
 
 
     while (running) {
-        // handle events
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_QUIT) {
-                running = false;
-
+    // handle events
+    while (SDL_PollEvent(&e)) {
+        if (e.type == SDL_QUIT) {
+            running = false;
+        } else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP) {
+            pause = pauseState(pause, e);
+            if (!pause) {
+                processPlayerInput(&sonic, moveLeft, moveRight, pause, e);
             }
-            processPlayerInput(&sonic, moveLeft, moveRight, pause, e);
         }
-        if (moveLeft && !moveRight) sonic.vx = -3.0f;
-        else if (moveRight && !moveLeft) sonic.vx = 3.0f;
+    }
+
+    if (pause) {
+        renderPause(renderer, font);
+        SDL_RenderPresent(renderer);
+        continue;
+    }
+        if (moveLeft && !moveRight) sonic.vx = physics::MAX_RUN_SPEEDL;
+        else if (moveRight && !moveLeft) sonic.vx = physics::MAX_RUN_SPEED;
         else sonic.vx = 0.0f;
 
         // delta time calculations
@@ -116,7 +126,7 @@ for (int x = 5; x <= 12; ++x) {
         // run physics
         physics::updatePlayer(&sonic, &tilemap, deltaTime);
 
-        // Clear screen
+        // clear screen
         SDL_SetRenderDrawColor(renderer, 30, 30, 30, 255);
         SDL_RenderClear(renderer);
 
@@ -127,7 +137,7 @@ for (int x = 5; x <= 12; ++x) {
         // present current frame
         SDL_RenderPresent(renderer);
 
-        // Debug print
+        // debug print
         std::cout << "x=" << sonic.x << " y=" << sonic.y
                   << " vx=" << sonic.vx << " vy=" << sonic.vy << "\n";
 

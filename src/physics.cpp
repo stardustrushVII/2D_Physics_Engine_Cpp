@@ -2,18 +2,20 @@
 #include "../include/physics.h"
 #include "../include/player.h"
 #include "../include/tilemap.h"
+#include "../include/input.h"
 #include <fstream>
 #include <cmath>
 
 namespace physics {
 
-    const float GRAVITY = 0.21875f; // Gravity per frame
-    const float MAX_FALL_SPEED = 16.0f; // Terminal velocity
-    const float ACCELERATION = 0.046875f; // Ground acceleration
-    const float DECELERATION = 0.5f; // Ground deceleration
+    const float GRAVITY = 0.21875f; // gravity per frame
+    const float MAX_FALL_SPEED = 16.0f; // terminal velocity
+    const float ACCELERATION = 0.046875f; // ground acceleration
+    const float DECELERATION = 0.5f; // ground deceleration
     const float ROLLING_FRICTION = 0.125f; // Friction when rolling
-    const float MAX_RUN_SPEED = 6.0f; // Max running speed
-    const float JUMP_STRENGTH = -6.5f; // Initial jump velocity
+    const float MAX_RUN_SPEED = 6.0f; // max running speed
+    const float MAX_RUN_SPEEDL = -6.0f; // max running speed (LEFT)
+    const float JUMP_STRENGTH = -6.5f; // initial jump velocity
 
     void updatePlayer(Player* player, TileMap* tilemap, float /*deltaTime*/) {
         // gravity apply if airbourne
@@ -23,7 +25,7 @@ namespace physics {
                 player->vy = MAX_FALL_SPEED;
         }
 
-        // Horizontal movement
+        // horizontal movement
         if (player->isGrounded && !player->isRolling) {
             if (player->moveLeft) {
                 player->vx -= ACCELERATION;
@@ -34,7 +36,7 @@ namespace physics {
                 if (player->vx > MAX_RUN_SPEED)
                     player->vx = MAX_RUN_SPEED;
             } else {
-                // Deceleration when no input
+                // deceleration when no input
                 if (player->vx > 0) {
                     player->vx -= DECELERATION;
                     if (player->vx < 0)
@@ -46,8 +48,8 @@ namespace physics {
                 }
             }
         }
-
-        // Rolling mechanics
+    
+        // rolling mechanics
         if (player->isRolling) {
             if (player->vx > 0) {
                 player->vx -= ROLLING_FRICTION;
@@ -79,21 +81,21 @@ namespace physics {
             int slopeY = tileY * 32 + tilemap->getSlopeHeightAt(tileX, tileY, offsetX);
 
             if ((player->y + player->height) > slopeY) {
-                // Snap to slope surface
+                // snapping to slope surface
                 player->y = slopeY - player->height;
                 player->vy = 0;
                 player->isGrounded = true;
                 player->isJumping = false;
 
-                // Adjust velocity based on slope
+                // velocity adjustment for slopes
                 if (tile == TileMap::SLOPE_LEFT)
-                    player->vx -= 0.125f; // Simulate rolling down left slope
+                    player->vx -= 0.125f; // simulate rolling down left slope
                 else if (tile == TileMap::SLOPE_RIGHT)
-                    player->vx += 0.125f; // Simulate rolling down right slope
+                    player->vx += 0.125f; // simulate rolling down right slope
             }
 
             // debugging slope log
-            std::ofstream debug("/Users/jamesevans/Documents/cpp-practice/sonic-engine/debug_log.txt", std::ios::app);
+            std::ofstream debug("/Users/Shared/debuglogplaceholder/debuglogs.txt", std::ios::app);
             if (debug.is_open()) {
                 debug << "[SLOPE COLLISION] Tile: " << tile
                       << " at (" << tileX << ", " << tileY << "), slopeY = " << slopeY
@@ -111,7 +113,7 @@ namespace physics {
             player->isGrounded = false;
         }
 
-        // Jumping
+        // jump
         if (player->moveJump && player->isGrounded && !player->isJumping) {
             player->vy = JUMP_STRENGTH;
             player->isGrounded = false;

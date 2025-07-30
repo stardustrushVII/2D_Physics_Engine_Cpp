@@ -91,9 +91,11 @@ int main(int /*argc*/, char* /*argv*/[]) {
         if (cameraX < 0) cameraX = 0; // prevent camera from going out of bounds
 
         // movement controls
-        if (moveLeft && !moveRight) sonic->vx = -3.0f;
-        else if (moveRight && !moveLeft) sonic->vx = 3.0f;
+        if (moveLeft && !moveRight) sonic->vx = physics::MAX_RUN_SPEEDL;
+        else if (moveRight && !moveLeft) sonic->vx = physics::MAX_RUN_SPEED;
         else sonic->vx = 0.0f;
+
+        
 
         // game logic update
         physics::updatePlayer(sonic, map, 0.016f); // frame time budget ~60fps

@@ -5,9 +5,9 @@ BUILD_DIR = build
 
 SRC_DIR = src
 
-all: build/sonic build/leveltest
+all: build/Stardust_Engine build/leveltest
 
-build/sonic: \
+build/Stardust_Engine: \
     $(SRC_DIR)/main.cpp \
 	$(SRC_DIR)/resolution_selector.cpp \
 	$(SRC_DIR)/input.cpp \
@@ -22,4 +22,4 @@ build/leveltest: src/leveltest.cpp src/player.cpp src/tilemap.cpp src/physics.cp
 	$^ -o $@ -L/opt/homebrew/lib `sdl2-config --libs` -lSDL2_ttf
 
 clean:
-	rm -rf build/*.o build/sonic build/leveltest
+	rm -rf build/*.o build/stardust_engine build/leveltest
