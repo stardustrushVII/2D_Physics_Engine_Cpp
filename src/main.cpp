@@ -45,6 +45,21 @@ int main(int /*argc*/, char* /*argv*/[]) {
     TileMap* map = new TileMap(50, 15);
     Player* sonic = new Player(100, 100);
 
+    for (int x = 0; x < 50; ++x) {
+    map->setTile(x, 13, TileMap::SOLID);
+    map->setTile(x, 14, TileMap::SOLID);
+    map->setTile(10, 12, TileMap::SLOPE_LEFT);
+    map->setTile(11, 12, TileMap::SLOPE_RIGHT);
+    map->setTile(12, 11, TileMap::SLOPE_LEFT);
+    map->setTile(13, 11, TileMap::SLOPE_RIGHT);
+    map->setTile(14, 10, TileMap::SLOPE_LEFT);
+    map->setTile(15, 10, TileMap::SLOPE_RIGHT);
+    map->setTile(16, 9, TileMap::SLOPE_LEFT);
+    map->setTile(17, 9, TileMap::SLOPE_RIGHT);
+    map->setTile(18, 8, TileMap::SLOPE_LEFT);
+    map->setTile(19, 8, TileMap::SLOPE_RIGHT);
+}
+
     bool running = true;
     bool moveLeft = false;
     bool moveRight = false;
@@ -73,6 +88,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
         int levelWidth = map->getWidth() * 32;
         if (cameraX < 0) cameraX = 0;
         if (cameraX > levelWidth - winW) cameraX = levelWidth - winW;
+        if (cameraX < 0) cameraX = 0; // prevent camera from going out of bounds
 
         // movement controls
         if (moveLeft && !moveRight) sonic->vx = -3.0f;

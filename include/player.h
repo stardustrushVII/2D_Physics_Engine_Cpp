@@ -22,6 +22,10 @@ public:
     bool isGrounded = false;
     bool isJumping = false;
     bool jumpHeld = false;
+    bool isRolling = false;
+    bool moveLeft = false;
+    bool moveRight = false;
+    bool moveJump = false;
 };
 
 #endif
