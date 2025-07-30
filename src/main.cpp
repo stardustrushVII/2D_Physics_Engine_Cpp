@@ -67,7 +67,17 @@ int main(int /*argc*/, char* /*argv*/[]) {
 
     SDL_Event e;
 
+    // time
+    Uint32 lastTicks = SDL_GetTicks();
+    float deltaTime = 0.0f;
+
      while (running) {
+        // Calculate deltaTime
+        Uint32 currentTicks = SDL_GetTicks(); // Time at the start of the current frame
+        deltaTime = (currentTicks - lastTicks) / 1000.0f; // Convert milliseconds to seconds
+        lastTicks = currentTicks;
+        
+        // handle events
         while (SDL_PollEvent(&e)) {
             if (e.type == SDL_QUIT) running = false;
             pause = pauseState(pause, e);

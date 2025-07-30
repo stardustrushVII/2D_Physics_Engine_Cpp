@@ -7,6 +7,8 @@ Player::Player(float startX, float startY) {
     y = startY;
     vx = 0;
     vy = 0;
+    moveLeft = moveRight = moveJump = false;
+
 }
 
 Player::~Player() {
