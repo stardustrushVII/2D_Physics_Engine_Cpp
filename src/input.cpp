@@ -15,10 +15,8 @@ void processPlayerInput(Player* player, bool& moveLeft, bool& moveRight, bool& p
     }
 
         if (e.key.keysym.sym == SDLK_SPACE) {
-            if (!player->jumpHeld && player->isGrounded) {
-                player->vy = -12.5f;
-                player->isGrounded = false;
-                player->isJumping = true;
+            if (!player->jumpHeld) {
+                player->moveJump = true;
                 player->jumpHeld = true;
             }
         }
@@ -38,6 +36,7 @@ void processPlayerInput(Player* player, bool& moveLeft, bool& moveRight, bool& p
             // reset jumpHeld so next jump press is allowed
             player->jumpHeld = false;
             player->isJumping = false;
+            player->moveJump = false;
         }
     }
 }

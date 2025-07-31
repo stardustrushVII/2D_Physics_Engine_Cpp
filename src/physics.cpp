@@ -5,22 +5,24 @@
 #include "../include/input.h"
 #include <fstream>
 #include <cmath>
+#include <iostream>
 
 namespace physics {
 
-    const float GRAVITY = 0.21875f; // gravity per frame
+    const float GRAVITY = 9.8f; // gravity per frame
     const float MAX_FALL_SPEED = 16.0f; // terminal velocity
-    const float ACCELERATION = 0.046875f; // ground acceleration
-    const float DECELERATION = 0.5f; // ground deceleration
-    const float ROLLING_FRICTION = 0.125f; // Friction when rolling
-    const float MAX_RUN_SPEED = 6.0f; // max running speed
-    const float MAX_RUN_SPEEDL = -6.0f; // max running speed (LEFT)
+    const float ACCELERATION = 3.3f; // ground acceleration
+    const float DECELERATION = 2.0f; // ground deceleration
+    const float ROLLING_FRICTION = 0.125f; // friction when rolling
+    const float MAX_RUN_SPEED = 6.5f; // max running speed
+    const float MAX_RUN_SPEEDL = -6.5f; // max running speed (LEFT)
     const float JUMP_STRENGTH = -6.5f; // initial jump velocity
+    float deltaTime = 0.016f;
 
-    void updatePlayer(Player* player, TileMap* tilemap, float /*deltaTime*/) {
+    void updatePlayer(Player* player, TileMap* tilemap, float deltaTime) {
         // gravity apply if airbourne
         if (!player->isGrounded) {
-            player->vy += GRAVITY;
+            player->vy += GRAVITY * deltaTime; // apply gravity
             if (player->vy > MAX_FALL_SPEED)
                 player->vy = MAX_FALL_SPEED;
         }
@@ -28,21 +30,21 @@ namespace physics {
         // horizontal movement
         if (player->isGrounded && !player->isRolling) {
             if (player->moveLeft) {
-                player->vx -= ACCELERATION;
+                player->vx -= ACCELERATION * deltaTime;
                 if (player->vx < -MAX_RUN_SPEED)
                     player->vx = -MAX_RUN_SPEED;
             } else if (player->moveRight) {
-                player->vx += ACCELERATION;
+                player->vx += ACCELERATION * deltaTime;
                 if (player->vx > MAX_RUN_SPEED)
                     player->vx = MAX_RUN_SPEED;
             } else {
                 // deceleration when no input
                 if (player->vx > 0) {
-                    player->vx -= DECELERATION;
+                    player->vx -= DECELERATION * deltaTime;
                     if (player->vx < 0)
                         player->vx = 0;
                 } else if (player->vx < 0) {
-                    player->vx += DECELERATION;
+                    player->vx += DECELERATION * deltaTime;
                     if (player->vx > 0)
                         player->vx = 0;
                 }
@@ -52,11 +54,11 @@ namespace physics {
         // rolling mechanics
         if (player->isRolling) {
             if (player->vx > 0) {
-                player->vx -= ROLLING_FRICTION;
+                player->vx -= ROLLING_FRICTION * deltaTime;
                 if (player->vx < 0)
                     player->vx = 0;
             } else if (player->vx < 0) {
-                player->vx += ROLLING_FRICTION;
+                player->vx += ROLLING_FRICTION * deltaTime;
                 if (player->vx > 0)
                     player->vx = 0;
             }
@@ -113,16 +115,20 @@ namespace physics {
             player->isGrounded = false;
         }
 
-        // jump
+         // jump
         if (player->moveJump && player->isGrounded && !player->isJumping) {
+            std::cout << "Jumping!" << std::endl;
             player->vy = JUMP_STRENGTH;
             player->isGrounded = false;
             player->isJumping = true;
+            player->moveJump = false; 
         }
+
+       
 
         // TODO:: friction
         // TODO:: wall collision
-        // TODO:: these physics are dogass, FIX THEM!!
+        // TODO:: these physics are......, FIX THEM!!
     }
 
 }

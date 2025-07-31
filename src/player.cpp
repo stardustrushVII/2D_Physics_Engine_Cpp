@@ -7,7 +7,6 @@ Player::Player(float startX, float startY) {
     y = startY;
     vx = 0;
     vy = 0;
-    moveLeft = moveRight = moveJump = false;
 
 }
 
@@ -16,13 +15,7 @@ Player::~Player() {
 }
 
 void Player::update(TileMap* tilemap, int windowWidth) { // clearly important ALWAYS LOOK HERE FIRST
-    vy += 0.5f;  // fake gravity
-    y += vy; // vertical position update
-    if (!isJumping && vy < 0){
-        vy *= 0.4f;
-    }
-    x += vx;
-    if (vy > 10.0f) vy = 10.0f; // fall speed max
+
 
     //---collisionDetection <bottom_center of player>
     float probeX = x + 16;

@@ -76,7 +76,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
         Uint32 currentTicks = SDL_GetTicks(); // Time at the start of the current frame
         deltaTime = (currentTicks - lastTicks) / 1000.0f; // Convert milliseconds to seconds
         lastTicks = currentTicks;
-        
+
         // handle events
         while (SDL_PollEvent(&e)) {
             if (e.type == SDL_QUIT) running = false;
@@ -100,14 +100,14 @@ int main(int /*argc*/, char* /*argv*/[]) {
         if (cameraX > levelWidth - winW) cameraX = levelWidth - winW;
         if (cameraX < 0) cameraX = 0; // prevent camera from going out of bounds
 
-        // movement controls
-        if (moveLeft && !moveRight) sonic->vx = physics::MAX_RUN_SPEEDL;
-        else if (moveRight && !moveLeft) sonic->vx = physics::MAX_RUN_SPEED;
-        else sonic->vx = 0.0f;
 
         
 
         // game logic update
+        
+        sonic->moveLeft = moveLeft;
+        sonic->moveRight = moveRight;
+
         physics::updatePlayer(sonic, map, 0.016f); // frame time budget ~60fps
 
         // start drawing

@@ -114,14 +114,13 @@ for (int x = 5; x <= 12; ++x) {
         SDL_RenderPresent(renderer);
         continue;
     }
-        if (moveLeft && !moveRight) sonic.vx = physics::MAX_RUN_SPEEDL;
-        else if (moveRight && !moveLeft) sonic.vx = physics::MAX_RUN_SPEED;
-        else sonic.vx = 0.0f;
-
         // delta time calculations
         Uint32 currentTicks = SDL_GetTicks();
         float deltaTime = (currentTicks - lastTicks) / 1000.0f;
         lastTicks = currentTicks;
+
+        sonic.moveLeft = moveLeft;
+        sonic.moveRight = moveRight;
 
         // run physics
         physics::updatePlayer(&sonic, &tilemap, deltaTime);
