@@ -1,5 +1,6 @@
-A 2D physics engine that emulates classic Sonic the Hedgehog games. Here, I'll explain what everything does inside the root directory.
+A modular 2D game engine written from scratch in C++ using SDL2. Designed to be flexible, scalable, portable and built with performance and educational value in mind.
 The "src" folder holds all the .cpp files used for operation.
+
 
 input.cpp is the logic file that holds everything related to input. It handles key up, key down and pauseState using void processPlayerInput.
 
@@ -20,3 +21,23 @@ The "include" folder houses all the .cpp files declarations through their .h fil
 The "build" folder has has the Unix executable files that are the compiled code as applications.
 
 The "RUNFROMINHERE" inside "build" is where you should actually run the applications from because the compiled code relies on assets/Roboto.ttf for in-engine text rendering. The assets folder lives in here for easy launching.
+
+Key Features:
+
+DeltaTime Physics – Frame-independent movement system
+
+Tilemap System – Collision with floor and slopes
+
+Custom Input Manager – Modular input handling (pause, jump, direction, etc.)
+
+Dynamic Resolution Selector – Ranges from 480p to 4K (includes 1440p ultrawide support)
+
+In-Game Pause System – Rendered pause screen with toggling
+
+Modular Design – Individual .cpp/.h pairs for input, physics, player logic, tilemap, pause menu, etc.
+
+Makefile Compilation – Clean, portable build with modular includes
+
+Debug Views – Collision visualization support for slope debugging
+
+
