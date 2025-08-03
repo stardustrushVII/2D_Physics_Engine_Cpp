@@ -128,6 +128,9 @@ int main(int /*argc*/, char* /*argv*/[]) {
         SDL_Delay(16); // 16.67ms frametime budget
     }
 
+        std::cout << "app running, press any key to quit" << std::endl;
+        std::cin.get();
+
     delete map;
     delete sonic;
     TTF_CloseFont(font);
@@ -137,6 +140,5 @@ int main(int /*argc*/, char* /*argv*/[]) {
     SDL_Quit();
     return 0;
 
-    std::cout << "app running, press any key to quit" << std::endl;
-    std::cin.get();
+    
 }
